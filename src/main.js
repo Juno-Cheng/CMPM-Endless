@@ -2,9 +2,10 @@
 let config = {
   type: Phaser.AUTO,
   width: 640,
-  height: 480,
+  height: 290,
   scene: [MenuScene, Play, HelpScene],
   scale: {
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH},
   physics: {
       default: 'arcade',

@@ -10,36 +10,40 @@ class MenuScene extends Phaser.Scene {
   }
 
   create() {
-      // Add background image
-      this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
-      this.background.setOrigin(0, 0);
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
+    this.background.setOrigin(0, 0);
 
-      // Add title text
-      let title = this.add.text(this.cameras.main.centerX, 100, 'Game Title', { font: '40px Arial', fill: '#ffffff' });
-      title.setOrigin(0.5, 0.5); // Center the title
+    // Center the camera/view within the dimensions of the background
+    this.cameras.main.centerToBounds();
 
-      // Add buttons
-      let playButton = this.add.text(this.cameras.main.centerX, 200, 'Start', { font: '32px Arial', fill: '#ff0000' });
-      playButton.setInteractive({ useHandCursor: true });
-      playButton.setOrigin(0.5, 0.5);
-      playButton.on('pointerdown', () => this.scene.start('PlayScene')); // 'PlayScene' refers to the identifier for your main game scene
+    // Add title text
+    let title = this.add.text(config.width / 2, 90, 'Slime Jumper', { font: '30px "Press Start 2P"', fill: '#ffffff' });
+    title.setOrigin(0.5, 0.5); // Center the title
 
-      let helpButton = this.add.text(this.cameras.main.centerX, 260, 'Help', { font: '32px Arial', fill: '#ff0000' });
-      helpButton.setInteractive({ useHandCursor: true });
-      helpButton.setOrigin(0.5, 0.5);
-      helpButton.on('pointerdown', () => this.scene.start('HelpScene')); // 'HelpScene' refers to the identifier for your help scene
+    // Add buttons
+    let playButton = this.add.text(config.width / 2, 200, 'START', { font: '20px "Press Start 2P"', fill: '#ff0000' });
+    playButton.setInteractive({ useHandCursor: true });
+    playButton.setOrigin(0.5, 0.5);
+    playButton.on('pointerdown', () => this.scene.start('PlayScene')); 
+
+    let helpButton = this.add.text(config.width / 2, 260, 'HELP', { font: '20px "Press Start 2P"', fill: '#ff0000' });
+    helpButton.setInteractive({ useHandCursor: true });
+    helpButton.setOrigin(0.5, 0.5);
+    helpButton.on('pointerdown', () => this.scene.start('HelpScene'));
+
 
 
       // Play background music
       let music = this.sound.add('backgroundMusic');
       music.play({
-        loop: true // This will make the track loop
+          loop: true // This will make the track loop
       });
 
 
   }
 
   update() {
-    this.background.tilePositionX -= 1;  //Shifts Background texture
+    this.background.tilePositionX -= .5;  //Shifts Background texture
   }
 }
+
