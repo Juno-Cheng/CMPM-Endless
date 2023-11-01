@@ -3,7 +3,7 @@ let config = {
   type: Phaser.AUTO,
   width: 640,
   height: 290,
-  scene: [MenuScene, Play, HelpScene],
+  scene: [MenuScene, Play, HelpScene, Gameover],
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH},

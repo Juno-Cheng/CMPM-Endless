@@ -18,20 +18,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
 
-        // Player movement - left and right
-        if (keyLEFT.isDown) {
-            this.setVelocityX(-this.moveSpeed); // move left
-        } else if (keyRIGHT.isDown) {
-            this.setVelocityX(this.moveSpeed); // move right
+        if (keys.keyLEFT.isDown) {
+            this.setVelocityX(-this.moveSpeed);
+        } else if (keys.keyRIGHT.isDown) {
+            this.setVelocityX(this.moveSpeed);
         } else {
-            this.setVelocityX(0); 
+            this.setVelocityX(0);
         }
-
-        // Player jump. The player can jump while touching the ground
-        if (Phaser.Input.Keyboard.JustDown(keyUP) && this.body.touching.down) {
-            this.setVelocityY(-this.jumpStrength); // jump up
+    
+        if (Phaser.Input.Keyboard.JustDown(keys.keyUP) && this.body.touching.down) {
+            this.setVelocityY(-this.jumpStrength);
         }
     }
+
+    
 }
 
 

@@ -24,7 +24,7 @@ class MenuScene extends Phaser.Scene {
     let playButton = this.add.text(config.width / 2, 200, 'START', { font: '20px "Press Start 2P"', fill: '#ff0000' });
     playButton.setInteractive({ useHandCursor: true });
     playButton.setOrigin(0.5, 0.5);
-    playButton.on('pointerdown', () => this.scene.start('PlayScene')); 
+    playButton.on('pointerdown', () => this.scene.start('playScene')); 
 
     let helpButton = this.add.text(config.width / 2, 260, 'HELP', { font: '20px "Press Start 2P"', fill: '#ff0000' });
     helpButton.setInteractive({ useHandCursor: true });

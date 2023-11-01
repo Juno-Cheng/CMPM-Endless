@@ -1,16 +1,18 @@
 class Platform extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture) {
+    constructor(scene, x, y, texture, scaleX=1, scaleY=1) {
         super(scene, x, y, texture);
 
         // Add this platform object to both the physics world and the scene
         scene.physics.add.existing(this);
         scene.add.existing(this);
 
+        // Apply the scaling
+        this.setScale(scaleX, scaleY);
+
         // Make sure the platform doesn't get affected by gravity and won't move upon collisions
         this.body.allowGravity = false;
         this.body.immovable = true; 
     }
-
     update() {
         // Move the platform left; the speed should be set in a way that it's consistent with the game's timing
         this.body.setVelocityX(-platformSpeed); 
