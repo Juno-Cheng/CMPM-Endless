@@ -11,6 +11,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Player physics properties. Adjust the body settings here as needed
         this.setCollideWorldBounds(true); // Player cannot move out of the game world
 
+        this.body.setSize(this.width * 0.8, this.height * .2); 
+        this.body.setOffset(this.width * 0.1, this.height * 0.1); 
+
         // Initialize player properties from global variables
         this.moveSpeed = playerSpeed;
         this.jumpStrength = playerJumpForce;

@@ -66,6 +66,11 @@ class Play extends Phaser.Scene {
 
         this.platforms.getChildren().forEach(platform => {
             platform.update();
+            
+            if (platform.x + platform.width/2 < 0) {
+                platform.destroy();
+            }
+
         });
     }
 

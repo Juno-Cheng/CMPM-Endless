@@ -13,7 +13,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         this.body.allowGravity = false;
         this.body.immovable = true; 
 
-        const height = this.height;
+        const height = this.height *0.;
         const reducedHeight = height * 0.8;
         const offsetY = height * 0.1;
         this.body.setSize(this.width, reducedHeight);
