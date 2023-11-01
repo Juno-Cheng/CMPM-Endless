@@ -15,7 +15,7 @@ class Play extends Phaser.Scene {
         //you’re going to use (so you can reference it later in your program) and the URL for where your graphic is located.
         this.load.image('arrow', './assets/Arrow.png');
         this.load.image('player', './assets/Player.png');
-        this.load.image('platform', './assets/Platform.png');
+        this.load.image('platform', './assets/island.png');
         this.load.image('background', './assets/background.png');
 
         // Load a spritesheet 'explosion' and define each frame's dimensions and sequence within the larger image file.
@@ -24,19 +24,28 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //Background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
         this.background.setOrigin(0, 0);
+
+        //Group:
+        this.platforms = this.physics.add.group({
+            allowGravity: false,
+            immovable: true
+        });
 
         //Start with Player spawning in the middle and 1 large platform the is scaled, so a spawning point, the platform will slowly move to the left
         this.player = new Player(this, config.width / 2, config.height / 2, 'player');
 
         // Create the initial spawning platform
-        this.spawnPlatform(config.width / 2, config.height - 50, 3); 
+        this.spawnPlatform(config.width / 2, config.height - 60); 
 
         this.spawnInterval = setInterval(() => {
-            this.spawnPlatform(config.width, Phaser.Math.Between(100, config.height - 50), 1);
+            this.spawnPlatform(config.width, Phaser.Math.Between(config.height - 100, config.height - 50), 1);
         }, 2000);
         
+        this.physics.add.collider(this.player, this.platforms);
+
         //Define Keys
         this.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -51,27 +60,28 @@ class Play extends Phaser.Scene {
             keyUP: this.keyUP
         });
 
-        // Check if the player has fallen off the screen
         if (this.player.y > config.height) {
             this.gameOver();
         }
+
+        this.platforms.getChildren().forEach(platform => {
+            platform.update();
+        });
     }
 
-    spawnPlatform(){
+    spawnPlatform(x, y, scaleX) {
         if (!this.platforms) {
             this.platforms = this.physics.add.group();
         }
         let platform = new Platform(this, x, y, 'platform');
-        platform.setScale(scaleX, 1); 
         this.platforms.add(platform);
     }
 
-    increasePlatformSpeed(){
-        platformSpeed += 10;
+    increasePlatformSpeed() {
+        this.platformSpeed += 10; // Ensure you have this.platformSpeed initialized somewhere in the class
     }
 
-    gameOver(){
-        //Change scenes
+    gameOver() {
         this.scene.start('GameOverScene');
     }
 

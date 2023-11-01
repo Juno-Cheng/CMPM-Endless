@@ -1,5 +1,5 @@
 class Platform extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, scaleX=1, scaleY=1) {
+    constructor(scene, x, y, texture, scaleX=.7, scaleY=.7) {
         super(scene, x, y, texture);
 
         // Add this platform object to both the physics world and the scene
@@ -12,6 +12,12 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         // Make sure the platform doesn't get affected by gravity and won't move upon collisions
         this.body.allowGravity = false;
         this.body.immovable = true; 
+
+        const height = this.height;
+        const reducedHeight = height * 0.8;
+        const offsetY = height * 0.1;
+        this.body.setSize(this.width, reducedHeight);
+        this.body.setOffset(0, offsetY);
     }
     update() {
         // Move the platform left; the speed should be set in a way that it's consistent with the game's timing
