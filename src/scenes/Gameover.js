@@ -3,24 +3,40 @@ class Gameover extends Phaser.Scene {
         super('GameOverScene'); 
     }
 
+    init(data) {
+        // Get the score from the passed data
+        this.finalScore = data.score;
+    }
+
     create() {
         // Set the background color
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
         this.background.setOrigin(0, 0);
 
-        // Add text with the game controls
-        let helpText = "Game Over";
-        let textStyle = { font: '40px Arial', fill: '#ffffff', align: 'center', lineSpacing: 5 };
-        
-        // Center the text on the canvas
-        let text = this.add.text(config.width / 2, (config.height / 2)-20, helpText, textStyle);
-        text.setOrigin(0.5); // Center the text
+        // Add "Game Over" text
+        let gameOverText = "Game Over";
+        let gameOverStyle = { font: '40px Arial', fill: '#ffffff', align: 'center' };
+        let gameOverTextObj = this.add.text(config.width / 2, config.height / 2 - 60, gameOverText, gameOverStyle);
+        gameOverTextObj.setOrigin(0.5);
+
+        // Add the score text
+        let scoreText = `Your Score: ${this.finalScore}`;
+        let scoreStyle = { font: '32px Arial', fill: '#ffffff', align: 'center' };
+        let scoreTextObj = this.add.text(config.width / 2, config.height / 2, scoreText, scoreStyle);
+        scoreTextObj.setOrigin(0.5);
 
         // Create a 'Restart' button
-        let backButton = this.add.text(config.width / 2, (config.height / 2) + 30, 'Restart', { font: '24px Arial', fill: '#ff0' }); 
-        backButton.setOrigin(0.5);  // Center the text
-        backButton.setInteractive({ useHandCursor: true });
-        backButton.on('pointerdown', () => this.scene.start('playScene')); 
+        let restartButton = this.add.text(config.width / 2, config.height / 2 + 60, 'Restart', { font: '24px Arial', fill: '#ff0' }); 
+        restartButton.setOrigin(0.5);
+        restartButton.setInteractive({ useHandCursor: true });
+        restartButton.on('pointerdown', () => this.scene.start('playScene')); 
+
+        // Optionally add a "Main Menu" button to go back to the Menu scene
+        let mainMenuButton = this.add.text(config.width / 2, config.height / 2 + 100, 'Main Menu', { font: '24px Arial', fill: '#ff0' });
+        mainMenuButton.setOrigin(0.5);
+        mainMenuButton.setInteractive({ useHandCursor: true });
+        mainMenuButton.on('pointerdown', () => this.scene.start('MenuScene')); // assuming you have a scene with the key 'MenuScene'
     }
 }
+
 

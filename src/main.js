@@ -23,8 +23,8 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 
 // Player movement and physics constants
-let playerJumpForce = -200; // force at which the player character jumps up
-let playerSpeed = 100;      // horizontal speed of the player
+let playerJumpForce = -250; // force at which the player character jumps up
+let playerSpeed = 120;      // horizontal speed of the player
 
 // Platform setting
 let platformSpeed = 150;    // speed at which platforms move toward the player

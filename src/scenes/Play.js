@@ -18,15 +18,21 @@ class Play extends Phaser.Scene {
         this.load.image('platform', './assets/island.png');
         this.load.image('background', './assets/background.png');
 
-        // Load a spritesheet 'explosion' and define each frame's dimensions and sequence within the larger image file.
-        // Sheet is frames of images, and it read throught it.
-        //this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.audio('clickSound', './assets/audio/click.wav');
+        this.load.audio('deathSound', './assets/audio/dead.wav');
+        this.load.audio('jumpSound', './assets/audio/jump.wav');
+        this.load.audio('speedSound', './assets/audio/speed.wav');
     }
 
     create() {
         //Background
+        this.score = 0;
+
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
         this.background.setOrigin(0, 0);
+
+        //Black Borders:
+
 
         //Group:
         this.platforms = this.physics.add.group({
@@ -40,16 +46,29 @@ class Play extends Phaser.Scene {
         // Create the initial spawning platform
         this.spawnPlatform(config.width / 2, config.height - 60); 
 
-        this.spawnInterval = setInterval(() => {
-            this.spawnPlatform(config.width, Phaser.Math.Between(config.height - 100, config.height - 50), 1);
-        }, 2000);
-        
         this.physics.add.collider(this.player, this.platforms);
 
         //Define Keys
         this.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         this.keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+
+        this.nextSpawnTime = this.time.now + 1400;
+        this.delay = this.time.now + 1500;
+        this.increase = this.time.now + 10000;
+        this.ratio = 2000;
+
+        //Score:
+        // Create the score text
+        this.scoreText = this.add.text(25, 16, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
+
+        // Create a timed event that runs every 1000 milliseconds (1 second)
+        this.scoreTimer = this.time.addEvent({
+            delay: 1000,                // 1000ms = 1 second
+            callback: this.updateScore, // function to call each time
+            callbackScope: this,        // scope in which to call the function
+            loop: true                  // repeat forever
+        });
     }
 
     update(time, delta) {
@@ -64,14 +83,27 @@ class Play extends Phaser.Scene {
             this.gameOver();
         }
 
-        this.platforms.getChildren().forEach(platform => {
-            platform.update();
-            
-            if (platform.x + platform.width/2 < 0) {
-                platform.destroy();
-            }
+        if (time > this.delay) {
+            this.platforms.getChildren().forEach(platform => {
+                platform.update();
+                
+                if (platform.x + platform.width/2 < 0) {
+                    platform.destroy();
+                }
 
-        });
+            });
+        }
+
+        if (time > this.nextSpawnTime) {
+            this.spawnPlatform(config.width+100, Phaser.Math.Between(config.height - 100, config.height - 25), 1);
+            this.nextSpawnTime = time + this.ratio;  // Set the next spawn time
+        }
+
+        if (time > this.increase) {
+            this.increasePlatformSpeed();
+            this.increase = this.time.now + 2000; // Set the next increase time
+        }
+
     }
 
     spawnPlatform(x, y, scaleX) {
@@ -83,11 +115,22 @@ class Play extends Phaser.Scene {
     }
 
     increasePlatformSpeed() {
-        this.platformSpeed += 10; // Ensure you have this.platformSpeed initialized somewhere in the class
+        platformSpeed += 10; // Ensure you have this.platformSpeed initialized somewhere in the class
+        this.ratio -= 20
     }
 
     gameOver() {
-        this.scene.start('GameOverScene');
+        this.scene.start('GameOverScene', { score: this.score });
+
+    }
+    updateScore() {
+        // Increase the score by 1 (or however much you want per second)
+        this.score += 1;
+
+        // Update the score text
+        if (this.scoreText) {
+            this.scoreText.setText('Score: ' + this.score);
+        }
     }
 
 } 
