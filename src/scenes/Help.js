@@ -3,7 +3,12 @@ class HelpScene extends Phaser.Scene {
         super('HelpScene'); 
     }
 
+    preload() {
+        this.load.audio('clickSound', './assets/click.wav');
+    }
+
     create() {
+        this.clickSound = this.sound.add('clickSound');
         // Set the background color
         this.cameras.main.setBackgroundColor('0x000000'); // This is black
 
@@ -18,6 +23,9 @@ class HelpScene extends Phaser.Scene {
         // Create a 'Back to menu' button
         let backButton = this.add.text(50, 50, 'Back to Menu', { font: '24px Arial', fill: '#ff0' });
         backButton.setInteractive({ useHandCursor: true });
-        backButton.on('pointerdown', () => this.scene.start('MenuScene')); // replace 'MenuScene' with the actual key of your menu scene
+        backButton.on('pointerdown', () => {
+            this.sound.play('clickSound');
+            this.scene.start('MenuScene');
+        });  
     }
 }

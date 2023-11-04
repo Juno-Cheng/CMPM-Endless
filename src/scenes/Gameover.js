@@ -31,11 +31,13 @@ class Gameover extends Phaser.Scene {
         restartButton.setInteractive({ useHandCursor: true });
         restartButton.on('pointerdown', () => this.scene.start('playScene')); 
 
-        // Optionally add a "Main Menu" button to go back to the Menu scene
         let mainMenuButton = this.add.text(config.width / 2, config.height / 2 + 100, 'Main Menu', { font: '24px Arial', fill: '#ff0' });
         mainMenuButton.setOrigin(0.5);
         mainMenuButton.setInteractive({ useHandCursor: true });
-        mainMenuButton.on('pointerdown', () => this.scene.start('MenuScene')); // assuming you have a scene with the key 'MenuScene'
+        mainMenuButton.on('pointerdown', () => {
+            this.sound.play('clickSound');
+            this.scene.start('MenuScene');
+        });   
     }
 }
 

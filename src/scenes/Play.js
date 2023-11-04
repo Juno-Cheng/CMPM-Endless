@@ -18,10 +18,9 @@ class Play extends Phaser.Scene {
         this.load.image('platform', './assets/island.png');
         this.load.image('background', './assets/background.png');
 
-        this.load.audio('clickSound', './assets/audio/click.wav');
-        this.load.audio('deathSound', './assets/audio/dead.wav');
-        this.load.audio('jumpSound', './assets/audio/jump.wav');
-        this.load.audio('speedSound', './assets/audio/speed.wav');
+        this.load.audio('deathSound', './assets/dead.wav');
+        this.load.audio('speedSound', './assets/speed.wav');
+        this.load.audio('jump', './assets/jump.wav');
     }
 
     create() {
@@ -31,7 +30,9 @@ class Play extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
         this.background.setOrigin(0, 0);
 
-        //Black Borders:
+        //Sound:
+        this.deathSound = this.sound.add('deathSound');
+        this.speedSound = this.sound.add('speedSound');
 
 
         //Group:
@@ -42,6 +43,7 @@ class Play extends Phaser.Scene {
 
         //Start with Player spawning in the middle and 1 large platform the is scaled, so a spawning point, the platform will slowly move to the left
         this.player = new Player(this, config.width / 2, config.height / 2, 'player');
+        this.player.jumpSound = this.sound.add('jump');
 
         // Create the initial spawning platform
         this.spawnPlatform(config.width / 2, config.height - 60); 
@@ -69,6 +71,7 @@ class Play extends Phaser.Scene {
             callbackScope: this,        // scope in which to call the function
             loop: true                  // repeat forever
         });
+        this.end = 0;
     }
 
     update(time, delta) {
@@ -79,7 +82,8 @@ class Play extends Phaser.Scene {
             keyUP: this.keyUP
         });
 
-        if (this.player.y > config.height) {
+        if (this.player.y > config.height && this.end == 0) {
+            this.end = 1;
             this.gameOver();
         }
 
@@ -101,7 +105,7 @@ class Play extends Phaser.Scene {
 
         if (time > this.increase) {
             this.increasePlatformSpeed();
-            this.increase = this.time.now + 2000; // Set the next increase time
+            this.increase = this.time.now + 3000; // Set the next increase time
         }
 
     }
@@ -117,10 +121,14 @@ class Play extends Phaser.Scene {
     increasePlatformSpeed() {
         platformSpeed += 10; // Ensure you have this.platformSpeed initialized somewhere in the class
         this.ratio -= 20
+        this.speedSound.play();
     }
 
     gameOver() {
-        this.scene.start('GameOverScene', { score: this.score });
+        this.deathSound.play();
+        this.time.delayedCall(300, () => {
+            this.scene.start('GameOverScene', { score: this.score });
+        }, this);
 
     }
     updateScore() {

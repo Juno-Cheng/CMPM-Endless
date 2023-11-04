@@ -17,7 +17,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Initialize player properties from global variables
         this.moveSpeed = playerSpeed;
         this.jumpStrength = playerJumpForce;
+        this.jumpSound = null;
     }
+
 
     // The keys object is expected to contain keys: keyLEFT, keyRIGHT, keyUP
     update(keys) {
@@ -32,6 +34,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Player jump. The player can jump while touching the ground
         if (Phaser.Input.Keyboard.JustDown(keys.keyUP) && this.body.touching.down) {
             this.setVelocityY(this.jumpStrength);  // jump up
+            if (this.jumpSound) {
+                this.jumpSound.play();
+            }
         }
     }
 }
