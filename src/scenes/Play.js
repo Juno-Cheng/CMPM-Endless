@@ -9,10 +9,7 @@ class Play extends Phaser.Scene {
     }
     
     preload() {
-        // load images/tile sprites
-        //this class, load image, name, location
-        //The load.image() method expects two parameters: a string with the key name of the graphic 
-        //you’re going to use (so you can reference it later in your program) and the URL for where your graphic is located.
+
         this.load.image('arrow', './assets/Arrow.png');
         this.load.image('player', './assets/Player.png');
         this.load.image('platform', './assets/island.png');
@@ -21,11 +18,25 @@ class Play extends Phaser.Scene {
         this.load.audio('deathSound', './assets/dead.wav');
         this.load.audio('speedSound', './assets/speed.wav');
         this.load.audio('jump', './assets/jump.wav');
+
+        this.load.spritesheet('jump', './assets/jump.png', {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+        
     }
 
     create() {
         //Background
         this.score = 0;
+        let platformSpeed = 150;
+
+        this.anims.create({
+            key: 'jumping',
+            frames: this.anims.generateFrameNumbers('jump', { start: 0, end: 3 }),
+            frameRate: 3,
+            repeat: 0
+        });
 
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background');
         this.background.setOrigin(0, 0);

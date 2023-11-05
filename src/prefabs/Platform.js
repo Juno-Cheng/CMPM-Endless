@@ -24,8 +24,8 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocityX(-platformSpeed); 
 
         // Check if the platform is out of the screen bounds (left side)
-        if (this.x + this.width < 0) { // this.width is added to fully wait for the platform to go off-screen
-            this.destroy(); // or you could set flags to reuse it
+        if (this.x + this.width < 0) {
+            this.destroy(); 
         }
     }
 }

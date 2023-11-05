@@ -33,10 +33,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Player jump. The player can jump while touching the ground
         if (Phaser.Input.Keyboard.JustDown(keys.keyUP) && this.body.touching.down) {
-            this.setVelocityY(this.jumpStrength);  // jump up
-            if (this.jumpSound) {
-                this.jumpSound.play();
-            }
+            this.anims.play('jumping', true);
+            
+            this.scene.time.delayedCall(500, () => {
+                this.setVelocityY(this.jumpStrength); // Apply the jump velocity
+                if (this.jumpSound) {
+                    this.jumpSound.play();
+                }
+            }, [], this);
+        
         }
     }
 }
